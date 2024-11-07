@@ -1,0 +1,2 @@
+(this.webpackJsonpVirtuPet=this.webpackJsonpVirtuPet||[]).push([[0],{9:function(e,t,r){"use strict";r.r(t);r(1);var c=r(3),n=r.n(c),s=r(0);var i=()=>Object(s.jsx)("div",{children:Object(s.jsx)("h1",{children:"\u30db\u30fc\u30e0\u30da\u30fc\u30b8"})});n.a.render(Object(s.jsx)(i,{}),document.getElementById("root"))}},[[9,1,2]]]);
+//# sourceMappingURL=main.ff5b4277.chunk.js.map
