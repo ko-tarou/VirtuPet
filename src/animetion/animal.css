@@ -1,0 +1,13 @@
+/* animal.css */
+.animal {
+  position: absolute;
+  width: 100px;
+  height: auto;
+  animation: moveAnimal 5s linear infinite;
+}
+
+@keyframes moveAnimal {
+  0% { left: 0; top: 50%; }
+  50% { left: 80%; top: 40%; }
+  100% { left: 0; top: 50%; }
+}
