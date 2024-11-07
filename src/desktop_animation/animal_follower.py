@@ -1,7 +1,11 @@
 import tkinter as tk
+import os
 import pyautogui
 import time
 
+
+os.environ['TCL_LIBRARY']='C:/Users/tkota/AppData/Local/Programs/Python/Python312/tcl/tcl8.6'
+os.environ['TK_LIBRARY']='C:/Users/tkota/AppData/Local/Programs/Python/Python312/tcl/tk8.6'
 # ウィンドウを作成
 root = tk.Tk()
 root.title("Moving Animal")
@@ -11,7 +15,7 @@ root.attributes("-transparentcolor", "white")  # 背景を透明に
 # 動物の画像を表示
 canvas = tk.Canvas(root, width=100, height=100, bg='white', highlightthickness=0)
 canvas.pack()
-animal_img = tk.PhotoImage(file="path/to/your/animal.png")
+animal_img = tk.PhotoImage(file="../public/animal.webp")
 canvas.create_image(0, 0, anchor=tk.NW, image=animal_img)
 
 # 動物の追従関数
