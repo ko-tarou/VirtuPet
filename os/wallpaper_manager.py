@@ -28,11 +28,11 @@ class WallpaperManager:
             self.set_wallpaper(self.original_wallpaper)
             self.new_wallpaper = None
 
-# 使用例
-manager = WallpaperManager()
+# # 使用例
+# manager = WallpaperManager()
 
-# 新しい壁紙に変更
-manager.switch_wallpaper("path_to_new_image.jpg")
+# # 新しい壁紙に変更
+# manager.switch_wallpaper("path_to_new_image.jpg")
 
-# 元の壁紙に戻す
-manager.switch_wallpaper("path_to_new_image.jpg")  # 引数は同じものを使用
+# # 元の壁紙に戻す
+# manager.switch_wallpaper("path_to_new_image.jpg")  # 引数は同じものを使用
