@@ -19,7 +19,7 @@ const Home = () => {
     <div>
       <h1>ホームページ</h1>
       <button onClick={changeWallpaper}>壁紙を変更</button>
-      <img src="/animal.webp" alt="Animal" className="animal" />
+      <img src="/kani.png" alt="Animal" className="animal" />
     </div>
   );
 };
