@@ -1,38 +1,51 @@
-import ctypes
-import os
+import pygame
+import threading
+import time
 
 class WallpaperManager:
     def __init__(self):
-        self.original_wallpaper = self.get_current_wallpaper()
-        self.new_wallpaper = None
+        pygame.init()
+        self.animal_image = pygame.image.load("../static/images/animal_sprite.png")
+        self.is_animating = False
+        self.animation_thread = None
 
-    def get_current_wallpaper(self):
-        """現在の壁紙のパスを取得する"""
-        buffer = ctypes.create_unicode_buffer(512)
-        ctypes.windll.user32.SystemParametersInfoW(0x0073, len(buffer), buffer, 0)
-        return buffer.value
+    def start_animation(self, size):
+        # アニメーションが既に実行中でない場合のみ開始
+        if not self.is_animating:
+            self.is_animating = True
+            # 画像をスケール
+            self.scaled_animal_image = pygame.transform.scale(
+                self.animal_image,
+                (int(self.animal_image.get_width() * size), int(self.animal_image.get_height() * size))
+            )
+            # 別スレッドでアニメーションを開始
+            self.animation_thread = threading.Thread(target=self.animate)
+            self.animation_thread.start()
 
-    def set_wallpaper(self, image_path):
-        """指定した画像を壁紙に設定する"""
-        abs_image_path = os.path.abspath(image_path)
-        ctypes.windll.user32.SystemParametersInfoW(20, 0, abs_image_path, 3)
+    def stop_animation(self):
+        # アニメーションを停止
+        self.is_animating = False
+        if self.animation_thread is not None:
+            self.animation_thread.join()  # スレッドが終了するまで待つ
+            self.animation_thread = None
 
-    def switch_wallpaper(self, new_wallpaper_path):
-        """現在の壁紙と新しい壁紙を入れ替える"""
-        if self.new_wallpaper is None:
-            # 新しい壁紙が未設定の場合、指定した壁紙を設定し、元の壁紙を保存
-            self.new_wallpaper = new_wallpaper_path
-            self.set_wallpaper(self.new_wallpaper)
-        else:
-            # 元の壁紙に戻す
-            self.set_wallpaper(self.original_wallpaper)
-            self.new_wallpaper = None
+    def animate(self):
+        # Pygameでアニメーションを描画する処理
+        screen = pygame.display.set_mode((1920, 1080), pygame.NOFRAME)
+        clock = pygame.time.Clock()
+        x, y = 100, 100
 
-# # 使用例
-# manager = WallpaperManager()
+        while self.is_animating:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.is_animating = False
+                    break
 
-# # 新しい壁紙に変更
-# manager.switch_wallpaper("path_to_new_image.jpg")
-
-# # 元の壁紙に戻す
-# manager.switch_wallpaper("path_to_new_image.jpg")  # 引数は同じものを使用
+            # 画面をクリアして動物を描画
+            screen.fill((0, 0, 0))  # 黒でクリア
+            screen.blit(self.scaled_animal_image, (x, y))
+            pygame.display.update()
+            clock.tick(60)
+        
+        # アニメーションを停止したら画面を閉じる
+        pygame.quit()

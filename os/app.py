@@ -1,21 +1,32 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # 追加
 from wallpaper_manager import WallpaperManager
 
 app = Flask(__name__)
-CORS(app)  # CORSを有効にする
-manager = WallpaperManager()
+wallpaper_manager = WallpaperManager()
 
-@app.route('/change_wallpaper', methods=['POST'])
-def change_wallpaper():
-    print("API called")  # APIが呼ばれたときのログ
-    data = request.get_json()
-    image_path = data.get('image_path')
-    if image_path:
-        manager.switch_wallpaper(image_path)
-        return jsonify({"status": "success", "message": "Wallpaper changed"}), 200
+animal_settings = {
+    "size": 1.0,
+    "is_visible": True
+}
+
+@app.route('/get_animal_settings', methods=['GET'])
+def get_animal_settings():
+    return jsonify(animal_settings)
+
+@app.route('/set_animal_settings', methods=['POST'])
+def set_animal_settings():
+    data = request.json
+    if "size" in data:
+        animal_settings["size"] = data["size"]
+    if "is_visible" in data:
+        animal_settings["is_visible"] = data["is_visible"]
+
+    if animal_settings["is_visible"]:
+        wallpaper_manager.start_animation(animal_settings["size"])
     else:
-        return jsonify({"status": "error", "message": "Invalid image path"}), 400
+        wallpaper_manager.stop_animation()
 
-if __name__ == "__main__":
+    return jsonify({"status": "success", "settings": animal_settings})
+
+if __name__ == '__main__':
     app.run(port=5000)

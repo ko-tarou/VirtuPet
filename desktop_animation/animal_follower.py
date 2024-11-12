@@ -3,9 +3,12 @@ import ctypes.wintypes
 import win32gui
 import pygame
 import pyautogui
+import win32con  # 追加
 from smooth_movement import smooth_move
-import win32con  # これを追加
 
+# ディスプレイ解像度の自動取得
+user32 = ctypes.windll.user32
+screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
 # デスクトップの背景ウィンドウ（Progmanウィンドウ）を取得してWorkerWウィンドウを作成
 def get_workerw():
@@ -22,7 +25,6 @@ def get_workerw():
     workerw = None
     def enum_windows_callback(hwnd, _):
         nonlocal workerw  # workerw を関数外で使用するために nonlocal を使う
-        p = ctypes.create_unicode_buffer(255)
         class_name = win32gui.GetClassName(hwnd)
         if class_name == "WorkerW":
             workerw = hwnd
@@ -31,14 +33,14 @@ def get_workerw():
 
 # Pygame初期設定
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080), pygame.NOFRAME)
+screen = pygame.display.set_mode((screen_width, screen_height), pygame.NOFRAME)
 clock = pygame.time.Clock()
 
 # アニメーションする画像を読み込む
 background = pygame.image.load("../static/images/background.jpg")
 animal_image = pygame.image.load("../static/images/animal_sprite.png")
 animal_rect = animal_image.get_rect()
-background = pygame.transform.scale(background, (1920, 1080))
+background = pygame.transform.scale(background, (screen_width, screen_height))
 
 # 初期位置
 x, y = 100, 100
