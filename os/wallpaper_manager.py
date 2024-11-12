@@ -1,51 +1,30 @@
 import pygame
 import threading
-import time
+import subprocess
+import sys
+import os
 
 class WallpaperManager:
     def __init__(self):
         pygame.init()
-        self.animal_image = pygame.image.load("../static/images/animal_sprite.png")
         self.is_animating = False
         self.animation_thread = None
+        self.animal_follower_process = None
+        self.lock = threading.Lock()
 
     def start_animation(self, size):
-        # アニメーションが既に実行中でない場合のみ開始
-        if not self.is_animating:
-            self.is_animating = True
-            # 画像をスケール
-            self.scaled_animal_image = pygame.transform.scale(
-                self.animal_image,
-                (int(self.animal_image.get_width() * size), int(self.animal_image.get_height() * size))
-            )
-            # 別スレッドでアニメーションを開始
-            self.animation_thread = threading.Thread(target=self.animate)
-            self.animation_thread.start()
+        with self.lock:
+            if not self.is_animating:
+                self.is_animating = True
+                script_path = os.path.abspath("../desktop_animation/animal_follower.py")
+                # size引数をコマンドライン引数として渡す
+                self.animal_follower_process = subprocess.Popen([sys.executable, script_path, str(size)])
+                print("animal_follower.py started with size:", size)
 
     def stop_animation(self):
-        # アニメーションを停止
-        self.is_animating = False
-        if self.animation_thread is not None:
-            self.animation_thread.join()  # スレッドが終了するまで待つ
-            self.animation_thread = None
-
-    def animate(self):
-        # Pygameでアニメーションを描画する処理
-        screen = pygame.display.set_mode((1920, 1080), pygame.NOFRAME)
-        clock = pygame.time.Clock()
-        x, y = 100, 100
-
-        while self.is_animating:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.is_animating = False
-                    break
-
-            # 画面をクリアして動物を描画
-            screen.fill((0, 0, 0))  # 黒でクリア
-            screen.blit(self.scaled_animal_image, (x, y))
-            pygame.display.update()
-            clock.tick(60)
-        
-        # アニメーションを停止したら画面を閉じる
-        pygame.quit()
+        with self.lock:
+            self.is_animating = False
+            if self.animal_follower_process is not None:
+                self.animal_follower_process.terminate()
+                self.animal_follower_process = None
+                print("animal_follower.py stopped.")
