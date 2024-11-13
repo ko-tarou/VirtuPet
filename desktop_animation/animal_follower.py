@@ -5,10 +5,19 @@ import pygame
 import pyautogui
 import win32con  # 追加
 from smooth_movement import smooth_move
+import sys  # コマンドライン引数を取得するために追加
 
 # ディスプレイ解像度の自動取得
 user32 = ctypes.windll.user32
 screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+
+# デフォルトサイズ倍率
+size_multiplier = 1.0
+if len(sys.argv) > 1:
+    try:
+        size_multiplier = float(sys.argv[1])
+    except ValueError:
+        print("Invalid size argument, using default size 1.0")
 
 # デスクトップの背景ウィンドウ（Progmanウィンドウ）を取得してWorkerWウィンドウを作成
 def get_workerw():
@@ -39,7 +48,13 @@ clock = pygame.time.Clock()
 # アニメーションする画像を読み込む
 background = pygame.image.load("../static/images/background.jpg")
 animal_image = pygame.image.load("../static/images/animal_sprite.png")
-animal_rect = animal_image.get_rect()
+
+# サイズを調整
+scaled_animal_image = pygame.transform.scale(
+    animal_image,
+    (int(animal_image.get_width() * size_multiplier), int(animal_image.get_height() * size_multiplier))
+)
+animal_rect = scaled_animal_image.get_rect()
 background = pygame.transform.scale(background, (screen_width, screen_height))
 
 # 初期位置
@@ -66,7 +81,7 @@ while True:
 
     # 動物の画像を描画
     animal_rect.topleft = (x, y)
-    screen.blit(animal_image, animal_rect)
+    screen.blit(scaled_animal_image, animal_rect)
     
     # 更新
     pygame.display.update()
