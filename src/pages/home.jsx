@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../pages/styles/home.css';
 
 const Home = () => {
 
-     return (
+  return (
     <div className="container">
       <h1>VirtuPet</h1>
       <button class="btn1">ログイン</button>
