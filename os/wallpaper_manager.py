@@ -16,30 +16,47 @@ class WallpaperManager:
     def start_animation(self, size_multiplier):
         print(f"start_animation called with size: {size_multiplier}")  # デバッグ用ログ
         with self.lock:
-            if not self.is_animating:
-                self.is_animating = True
-                try:
-                    self.animation_thread = threading.Thread(
-                        target=self._run_animation,
-                        args=(size_multiplier,),
-                        daemon=True
-                    )
-                    self.animation_thread.start()
-                    print(f"Animation started with size: {size_multiplier}")
-                    return True
-                except Exception as e:
-                    print("アニメーションの開始に失敗しました:", str(e))
-                    self.is_animating = False
-                    return False
+            if self.is_animating:
+                print("アニメーションはすでに実行中です")
+                return False
+            
+            # 再起動のために古いスレッドをチェック
+            if self.animation_thread and self.animation_thread.is_alive():
+                print("古いスレッドを停止します")
+                self.stop_animation()
+
+            self.is_animating = True
+            try:
+                self.animation_thread = threading.Thread(
+                    target=self._run_animation,
+                    args=(size_multiplier,),
+                    daemon=True
+                )
+                self.animation_thread.start()
+                print(f"Animation started with size: {size_multiplier}")
+                return True
+            except Exception as e:
+                print("アニメーションの開始に失敗しました:", str(e))
+                self.is_animating = False
+                return False
+
 
     def stop_animation(self):
         with self.lock:
             if self.is_animating:
                 self.is_animating = False
+
+                # Pygameリソースを完全に解放
+                pygame.event.post(pygame.event.Event(pygame.QUIT))
+                if self.animation_thread:
+                    self.animation_thread.join()  # スレッドの終了を待機
+
                 pygame.quit()
-                print("Animation stopped.")
+                print("Animation stopped and resources released.")
                 return True
+            print("アニメーションは実行されていません")
             return False
+
 
     def _run_animation(self, size_multiplier):
         try:
@@ -113,8 +130,9 @@ class WallpaperManager:
 
     def _get_workerw(self):
         # Progmanウィンドウのメッセージを送信してWorkerWウィンドウを作成
+        progman = win32gui.FindWindow("Progman", None)
         win32gui.SendMessageTimeout(
-            win32gui.FindWindow("Progman", None),
+            progman,
             0x052C,
             0,
             0,
@@ -126,11 +144,12 @@ class WallpaperManager:
         workerw = None
         def enum_windows_callback(hwnd, _):
             nonlocal workerw
-            class_name = win32gui.GetClassName(hwnd)
-            if class_name == "WorkerW":
+            if win32gui.GetClassName(hwnd) == "WorkerW":
                 workerw = hwnd
 
         win32gui.EnumWindows(enum_windows_callback, None)
+        if not workerw:
+            print("WorkerWウィンドウが見つかりませんでした")
         return workerw
 
     def _smooth_move(self, x, y, target_x, target_y, speed=5):
