@@ -1,3 +1,4 @@
+from animal_animation import AnimalAnimation
 import ctypes
 import ctypes.wintypes
 import pygame
@@ -8,138 +9,128 @@ import win32gui
 import win32con
 
 class WallpaperManager:
-    def __init__(self):
-        self.is_animating = False
-        self.lock = threading.Lock()
-        self.animation_thread = None
+	def __init__(self):
+		self.is_animating = False
+		self.lock = threading.Lock()
+		self.animation_thread = None
+		self.animal_animation = AnimalAnimation(speed=5)  # アニメーションロジックを持つクラスをインスタンス化
 
-    def start_animation(self, size_multiplier):
-        print(f"start_animation called with size: {size_multiplier}")  # デバッグ用ログ
-        with self.lock:
-            if not self.is_animating:
-                self.is_animating = True
-                try:
-                    self.animation_thread = threading.Thread(
-                        target=self._run_animation,
-                        args=(size_multiplier,),
-                        daemon=True
-                    )
-                    self.animation_thread.start()
-                    print(f"Animation started with size: {size_multiplier}")
-                    return True
-                except Exception as e:
-                    print("アニメーションの開始に失敗しました:", str(e))
-                    self.is_animating = False
-                    return False
+	def start_animation(self, size_multiplier):
+		print(f"start_animation called with size: {size_multiplier}")
+		with self.lock:
+			if self.is_animating:
+				print("アニメーションはすでに実行中です")
+				return False
 
-    def stop_animation(self):
-        with self.lock:
-            if self.is_animating:
-                self.is_animating = False
-                pygame.quit()
-                print("Animation stopped.")
-                return True
-            return False
+			if self.animation_thread and self.animation_thread.is_alive():
+				print("古いスレッドを停止します")
+				self.stop_animation()
 
-    def _run_animation(self, size_multiplier):
-        try:
-            pygame.init()
+			self.is_animating = True
+			try:
+				self.animation_thread = threading.Thread(
+					target=self._run_animation,
+					args=(size_multiplier,),
+					daemon=True
+				)
+				self.animation_thread.start()
+				print(f"Animation started with size: {size_multiplier}")
+				return True
+			except Exception as e:
+				print("アニメーションの開始に失敗しました:", str(e))
+				self.is_animating = False
+				return False
 
-            # ディスプレイ解像度を取得
-            user32 = ctypes.windll.user32
-            screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+	def stop_animation(self):
+		with self.lock:
+			if self.is_animating:
+				self.is_animating = False
+				pygame.event.post(pygame.event.Event(pygame.QUIT))
+				if self.animation_thread:
+					self.animation_thread.join()
+				pygame.quit()
+				print("Animation stopped and resources released.")
+				return True
+			print("アニメーションは実行されていません")
+			return False
 
-            # Pygameウィンドウの初期化
-            screen = pygame.display.set_mode((screen_width, screen_height), pygame.NOFRAME)
-            clock = pygame.time.Clock()
+	def _run_animation(self, size_multiplier):
+		try:
+			pygame.init()
 
-            # WorkerWウィンドウを取得して背景に設定
-            workerw = self._get_workerw()
-            window_info = pygame.display.get_wm_info()
-            hwnd = window_info['window']
-            ctypes.windll.user32.SetParent(hwnd, workerw)
+			user32 = ctypes.windll.user32
+			screen_width, screen_height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
-            # 背景画像と動物画像を読み込む
-            background_path = os.path.abspath("../static/images/background.jpg")
-            animal_path = os.path.abspath("../static/images/animal_sprite.png")
+			screen = pygame.display.set_mode((screen_width, screen_height), pygame.NOFRAME)
+			clock = pygame.time.Clock()
 
-            if not os.path.exists(background_path) or not os.path.exists(animal_path):
-                print("背景または動物画像が見つかりません")
-                self.is_animating = False
-                return
+			workerw = self._get_workerw()
+			window_info = pygame.display.get_wm_info()
+			hwnd = window_info['window']
+			ctypes.windll.user32.SetParent(hwnd, workerw)
 
-            background = pygame.image.load(background_path)
-            animal_image = pygame.image.load(animal_path)
+			background_path = os.path.abspath("../static/images/background.jpg")
+			animal_path = os.path.abspath("../static/images/animal_sprite.png")
 
-            # 画像サイズを調整
-            scaled_animal_image = pygame.transform.scale(
-                animal_image,
-                (int(animal_image.get_width() * size_multiplier),
-                 int(animal_image.get_height() * size_multiplier))
-            )
-            background = pygame.transform.scale(background, (screen_width, screen_height))
-            animal_rect = scaled_animal_image.get_rect()
+			if not os.path.exists(background_path) or not os.path.exists(animal_path):
+				print("背景または動物画像が見つかりません")
+				self.is_animating = False
+				return
 
-            # 初期位置
-            x, y = 100, 100
+			background = pygame.image.load(background_path)
+			animal_image = pygame.image.load(animal_path)
 
-            # メインループ
-            while self.is_animating:
-                # マウスの位置を取得
-                target_x, target_y = pyautogui.position()
-                x, y = self._smooth_move(x, y, target_x, target_y)
+			scaled_animal_image = pygame.transform.scale(
+				animal_image,
+				(int(animal_image.get_width() * size_multiplier),
+				int(animal_image.get_height() * size_multiplier))
+			)
+			background = pygame.transform.scale(background, (screen_width, screen_height))
+			animal_rect = scaled_animal_image.get_rect()
 
-                # 背景画像を描画
-                screen.blit(background, (0, 0))
+			while self.is_animating:
+				# マウスの位置を取得
+				target_x, target_y = pyautogui.position()
 
-                # 動物画像を描画
-                animal_rect.topleft = (x, y)
-                screen.blit(scaled_animal_image, animal_rect)
+				# アニメーションロジックを使用して新しい位置を計算
+				x, y = self.animal_animation.update_position(target_x, target_y)
 
-                # 更新
-                pygame.display.update()
-                clock.tick(60)
+				# 背景と動物を描画
+				screen.blit(background, (0, 0))
+				animal_rect.topleft = (x, y)
+				screen.blit(scaled_animal_image, animal_rect)
 
-                # イベント処理
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.is_animating = False
+				pygame.display.update()
+				clock.tick(60)
 
-            pygame.quit()
-            print("Pygame animation stopped")
-        except Exception as e:
-            print("アニメーションの実行中にエラーが発生しました:", str(e))
-            self.is_animating = False
+				for event in pygame.event.get():
+					if event.type == pygame.QUIT:
+						self.is_animating = False
 
-    def _get_workerw(self):
-        # Progmanウィンドウのメッセージを送信してWorkerWウィンドウを作成
-        win32gui.SendMessageTimeout(
-            win32gui.FindWindow("Progman", None),
-            0x052C,
-            0,
-            0,
-            win32con.SMTO_NORMAL,
-            1000
-        )
+			pygame.quit()
+			print("Pygame animation stopped")
+		except Exception as e:
+			print("アニメーションの実行中にエラーが発生しました:", str(e))
+			self.is_animating = False
 
-        # WorkerWウィンドウを取得
-        workerw = None
-        def enum_windows_callback(hwnd, _):
-            nonlocal workerw
-            class_name = win32gui.GetClassName(hwnd)
-            if class_name == "WorkerW":
-                workerw = hwnd
+	def _get_workerw(self):
+		progman = win32gui.FindWindow("Progman", None)
+		win32gui.SendMessageTimeout(
+			progman,
+			0x052C,
+			0,
+			0,
+			win32con.SMTO_NORMAL,
+			1000
+		)
 
-        win32gui.EnumWindows(enum_windows_callback, None)
-        return workerw
+		workerw = None
+		def enum_windows_callback(hwnd, _):
+			nonlocal workerw
+			if win32gui.GetClassName(hwnd) == "WorkerW":
+				workerw = hwnd
 
-    def _smooth_move(self, x, y, target_x, target_y, speed=5):
-        # 動物の位置を滑らかに移動
-        dx = target_x - x
-        dy = target_y - y
-        distance = (dx ** 2 + dy ** 2) ** 0.5
-        if distance < speed:
-            return target_x, target_y
-        x += speed * dx / distance
-        y += speed * dy / distance
-        return x, y
+		win32gui.EnumWindows(enum_windows_callback, None)
+		if not workerw:
+			print("WorkerWウィンドウが見つかりませんでした")
+		return workerw

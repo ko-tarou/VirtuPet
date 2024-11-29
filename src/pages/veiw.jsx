@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../pages/styles/veiw.css'; // CSSファイルをインポート
 
 const View = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -45,7 +46,8 @@ const View = () => {
 
   return (
     <div>
-      <h1>ホームページ</h1>
+      <div class="view-container">
+      <div class="layout">
       <label>
         表示する:
         <input 
@@ -81,9 +83,16 @@ const View = () => {
           border: '1px solid #ccc' // プレビュー枠の視認性向上
         }}
       ></div>
+      </div>
+      <div className="center-screen">
+      <div className="game-screen">
+        {/* ゲーム画面のコンテンツをここに追加 */}
+      </div>
+    </div>
 
       {/* フィードバックメッセージ */}
       {feedbackMessage && <p>{feedbackMessage}</p>}
+      </div>
     </div>
   );
 };
