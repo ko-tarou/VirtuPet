@@ -24,7 +24,7 @@ const Select = () => {
     renderer.setClearColor(0x000000, 0);
     mountNode.appendChild(renderer.domElement);
     // ライトの追加
-    const light = new THREE.AmbientLight(0xffffff); // 環境光
+    const light = new THREE.AmbientLight(0xffffff,3); // 環境光
     scene.add(light);
     // GLTFLoaderを作成
     const loader = new GLTFLoader();
@@ -145,15 +145,15 @@ const Select = () => {
 
 
   return (
-    <div className="container-select" style={{ position: 'relative' }} onClick={handleveiw}>
+    <div className="container-select" style={{ position: 'relative' }} >
       <div className="button-container" style={{ position: 'absolute', left: '10px' }}>
-        <button className="chara1">きつね</button>
+        <button className="chara1" onClick={handleveiw}>きつね</button>
       </div>
-      <div className="button-container" style={{ position: 'absolute', left: '430px' }}>
-        <button className="chara2">いぬ</button>
+      <div className="button-container" style={{ position: 'absolute', left: '430px' }} >
+        <button className="chara2" onClick={handleveiw}>いぬ</button>
       </div>
       <div className="button-container" style={{ position: 'absolute', left: '830px' }}>
-        <button className="chara3">ペンギン</button>
+        <button className="chara3" onClick={handleveiw}>ペンギン</button>
       </div>
       <div ref={mountRef} style={{ width: '100vw', height: '100vh' }}></div>
     </div>
