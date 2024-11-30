@@ -42,22 +42,19 @@ const View = () => {
   return (
   
       <div className="view-container">
-      <div className="layout">
-      <div class="inputGroup">
-    <input id="option1" name="option1" type="checkbox"/>
-    <label for="option1">Windows表示　</label>
-  </div>
-  <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"></link>
+        <div className="layout">
+          <div class="inputGroup">
+            <input id="option1" name="option1" type="checkbox" onChange={handleVisibilityChange}/>
+            <label for="option1">Windows表示　</label>
+          </div>
+          <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"></link>
 
-    <div className="video-container">
-      <video width="100%" height="100%" autoPlay loop muted>
-        <source src="videos/test.mp4" type="video/mp4" />
-        お使いのブラウザは動画タグに対応していません。
-      </video>
-    </div>
-
-      {/* フィードバックメッセージ */}
-      {feedbackMessage && <p>{feedbackMessage}</p>}
+          <div className="video-container">
+            <video width="100%" height="100%" autoPlay loop muted>
+              <source src="videos/test.mp4" type="video/mp4" />
+              お使いのブラウザは動画タグに対応していません。
+            </video>
+        </div>
       </div>
     </div>
   );
