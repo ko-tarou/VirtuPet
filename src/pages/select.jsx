@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useNavigate } from 'react-router-dom';
 import '../pages/styles/select.css'; // CSSファイルをインポート
 
 
@@ -135,8 +136,16 @@ const Select = () => {
       mountNode.removeChild(renderer.domElement);
     };
   }, []);
+
+  const navigate = useNavigate()
+
+  const handleveiw = () => {
+    navigate('/view')
+  }
+
+
   return (
-    <div className="container-select" style={{ position: 'relative' }}>
+    <div className="container-select" style={{ position: 'relative' }} onClick={handleveiw}>
       <div className="button-container" style={{ position: 'absolute', left: '10px' }}>
         <button className="chara1">きつね</button>
       </div>
