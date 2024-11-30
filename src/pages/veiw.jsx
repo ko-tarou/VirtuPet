@@ -46,8 +46,8 @@ const View = () => {
 
   return (
     <div>
-      <div class="view-container">
-      <div class="layout">
+      <div className="view-container">
+      <div className="layout">
       <label>
         表示する:
         <input 
@@ -84,10 +84,12 @@ const View = () => {
         }}
       ></div>
       </div>
-      <div className="center-screen">
-      <div className="game-screen">
-        {/* ゲーム画面のコンテンツをここに追加 */}
-      </div>
+
+    <div className="video-container">
+      <video width="100%" height="100%" controls autoPlay loop muted>
+        <source src="videos/mov_hts-samp010.mp4" type="video/mp4" />
+        お使いのブラウザは動画タグに対応していません。
+      </video>
     </div>
 
       {/* フィードバックメッセージ */}

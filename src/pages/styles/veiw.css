@@ -30,9 +30,9 @@ body {
     margin-right: 0px; /* ゲーム画面との間隔 */
   }
   
-  .game-screen {
+  .video-container {
     width: 800px; /* ゲーム画面の幅を設定 */
-    height: 600px; /* ゲーム画面の高さを設定 */
+    height: 450px; /* ゲーム画面の高さを設定 */
     background-color: #000; /* 背景色を黒に設定 */
     border: 2px solid #fff; /* 白い枠線 */
   }
