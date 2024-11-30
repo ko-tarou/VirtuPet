@@ -19,7 +19,8 @@ wallpaper_manager = WallpaperManager()
 # 動物の表示設定を保持する変数
 animal_settings = {
     "is_visible": True,
-    "size": 1.0  # 初期値
+    "size": 1.0,  # 初期値
+    "video_path": "../static/images/test.mp4"  # デフォルトの動画パス
 }
 
 # 設定をファイルに保存する関数
@@ -47,7 +48,7 @@ def load_settings():
 async def get_animal_settings():
     return jsonify(animal_settings)
 
-# 設定更新エンドポイント
+
 @app.route('/set_animal_settings', methods=['POST'])
 async def set_animal_settings():
     try:
@@ -64,9 +65,16 @@ async def set_animal_settings():
                 return jsonify({"status": "error", "message": "サイズは0.5～3.0の範囲内で指定してください"}), 400
             animal_settings["size"] = size
 
+        # video_path を取得（存在しない場合はデフォルト値を使用）
+        video_path = data.get("video_path", animal_settings.get("video_path", "../static/images/test.mp4"))
+        animal_settings["video_path"] = video_path
+
         # アニメーションの開始/停止
         if animal_settings["is_visible"]:
-            success = wallpaper_manager.start_animation(animal_settings["size"])
+            success = wallpaper_manager.start_animation(
+                animal_settings["size"],
+                animal_settings["video_path"]
+            )
             if not success:
                 return jsonify({"status": "error", "message": "アニメーションの開始に失敗しました"}), 500
         else:
