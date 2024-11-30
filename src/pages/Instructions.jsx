@@ -18,7 +18,7 @@ const Instructions = () => {
         ペットを鑑賞し、癒されましょう。<br />
         さっそく、ペットを選んでみましょう。<br />
         </p>
-      <button class="btn1" onClick={handleLogin}>ログイン</button>
+      <button className ="btn1" onClick={handleLogin}>ログイン</button>
     </div>
   );
 }
