@@ -146,13 +146,13 @@ const Select = () => {
 
   return (
     <div className="container-select" style={{ position: 'relative' }} >
-      <div className="button-container" style={{ position: 'absolute', left: '10px' }}>
+      <div className="button-container" style={{ position: 'absolute', left: '10px', top: '250px'}}>
         <button className="chara1" onClick={handleveiw}>きつね</button>
       </div>
-      <div className="button-container" style={{ position: 'absolute', left: '430px' }} >
+      <div className="button-container" style={{ position: 'absolute', left: '430px', top: '250px'}} >
         <button className="chara2" onClick={handleveiw}>いぬ</button>
       </div>
-      <div className="button-container" style={{ position: 'absolute', left: '830px' }}>
+      <div className="button-container" style={{ position: 'absolute', left: '830px', top: '250px'}}>
         <button className="chara3" onClick={handleveiw}>ペンギン</button>
       </div>
       <div ref={mountRef} style={{ width: '100vw', height: '100vh' }}></div>
