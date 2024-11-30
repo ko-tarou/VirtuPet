@@ -87,7 +87,7 @@ const View = () => {
 
     <div className="video-container">
       <video width="100%" height="100%" controls autoPlay loop muted>
-        <source src="videos/mov_hts-samp010.mp4" type="video/mp4" />
+        <source src="videos/test.mp4" type="video/mp4" />
         お使いのブラウザは動画タグに対応していません。
       </video>
     </div>
