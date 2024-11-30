@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import '../pages/styles/select.css'; // CSSファイルをインポート
+
+
 const Select = () => {
   const mountRef = useRef(null);
   useEffect(() => {
@@ -33,8 +36,7 @@ const Select = () => {
         const angle = 60 * (Math.PI / 180); // 45度をラジアンに変換
         model.rotation.y = radius * Math.sin(angle); // 適切な距離を維持
         model.position.x = 0; // ペンギンの位置を少し右に移動（必要に応じて調整）
-        camera.position.x = 0; // 必要に応じて調整
-        
+        model.position.y -= 1;
         scene.add(model); // シーンに追加
         // アニメーションの再生設定
         const mixer = new THREE.AnimationMixer(model);
@@ -67,7 +69,7 @@ const Select = () => {
         camera.position.y = radius * Math.sin(angle); // 度の高さ
         model.rotation.y = radius * Math.sin(angle2); // 適切な距離を維持
         model.position.x = 7; // ペンギンの位置を少し右に移動（必要に応じて調整）
-        camera.position.x = 0; // 必要に応じて調整
+        model.position.y -= 1;
         camera.lookAt(0, 0, 0); // モデルの中心を向く
         scene.add(model); // シーンに追加
         // アニメーションの再生設定
@@ -102,7 +104,7 @@ const Select = () => {
             camera.position.y = radius * Math.sin(angle); // 度の高さ
             model.rotation.y = radius * Math.sin(angle2); // 適切な距離を維持
             model.position.x = -7; // ペンギンの位置を少し右に移動（必要に応じて調整）
-            camera.position.x = 0; // 必要に応じて調整
+            model.position.y -= 1;
             
             scene.add(model); // シーンに追加
             // アニメーションの再生設定
@@ -133,6 +135,19 @@ const Select = () => {
       mountNode.removeChild(renderer.domElement);
     };
   }, []);
-  return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }}></div>;
+  return (
+    <div className="container-select" style={{ position: 'relative' }}>
+      <div className="button-container" style={{ position: 'absolute', left: '10px' }}>
+        <button className="chara1">きつね</button>
+      </div>
+      <div className="button-container" style={{ position: 'absolute', left: '430px' }}>
+        <button className="chara2">いぬ</button>
+      </div>
+      <div className="button-container" style={{ position: 'absolute', left: '830px' }}>
+        <button className="chara3">ペンギン</button>
+      </div>
+      <div ref={mountRef} style={{ width: '100vw', height: '100vh' }}></div>
+    </div>
+  );
 };
 export default Select;
