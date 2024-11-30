@@ -42,3 +42,16 @@ html, body {
     box-shadow: none;
     transform: translateY(5px);
   }
+
+
+  .centered-model {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* ビューポートの高さに合わせる */
+  }
+  
+  .model-background {
+    width: 50%; /* モデルと背景のサイズを調整 */
+    height: auto;
+  }
