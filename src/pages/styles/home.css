@@ -1,44 +1,44 @@
-html, body {
-    max-width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: pink;
+html {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: pink;
 }
 
 .container {
-    height: 100%;
-    text-align: center;
-  }
-
-h1 {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    margin-top: 150px; /* 上からの距離を50pxに設定 */
-    font-size: 120px;
+  height: 100%;
+  text-align: center;
+  padding-top: 60px; /* ヘッダーの高さ分を確保 */
 }
 
-button {
-    display: block; /* ブロック要素として表示 */
-    margin: 10px auto; /* 上下に10pxのマージンを追加し、中央揃え */
-    padding: 0.8em 3em;
-    background-color: #ff8492; /* 背景色 */
-    box-shadow: 0 5px 0 #c46570; /* 影の太さ・色 */
-    border-radius: 60px;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none; /* 文字の下線を消す */
-    border: none; /* ボーダーを消す */
-  }
-  
-  button:active {
-    box-shadow: none;
-    transform: translateY(5px);
-  }
+h1 {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  margin-top: 50px; /* ヘッダーに対して余白を調整 */
+  font-size: 100px;
+}
 
-  
-    .btn1{
-        margin-bottom: 20px; /* 下に20pxのマージンを追加 */
-    }
-    .btn2 {
-        margin-top: 20px; /* 上に20pxのマージンを追加 */
-    }
+.btn1, .btn2 {
+display: block;
+margin: 10px auto;
+padding: 0.8em 3em;
+background-color: #ff8492;
+box-shadow: 0 5px 0 #c46570;
+border-radius: 60px;
+color: #fff;
+cursor: pointer;
+text-decoration: none;
+border: none;
+}
+
+.btn1:active, .btn2:active {
+box-shadow: none;
+transform: translateY(5px);
+}
+
+.btn1 {
+  margin-bottom: 20px;
+}
+
+.btn2 {
+  margin-top: 20px;
+}
