@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 html {
   max-width: 100%;
   margin: 0;
   padding: 0;
   background-color: pink;
+  font-family: 'Roboto', sans-serif; /* 全体にRobotoを適用 */
 }
 
 .container {
@@ -17,28 +20,28 @@ h1 {
   font-size: 100px;
 }
 
-.btn1, .btn2 {
-display: block;
-margin: 10px auto;
-padding: 0.8em 3em;
-background-color: #ff8492;
-box-shadow: 0 5px 0 #c46570;
-border-radius: 60px;
-color: #fff;
-cursor: pointer;
-text-decoration: none;
-border: none;
+button {
+  all: unset; /* デフォルトスタイルをリセット */
+  cursor: pointer;
+  display: block;
+  text-align: center; /* ボタン内のテキストを中央揃え */
 }
 
-.btn1:active, .btn2:active {
-box-shadow: none;
-transform: translateY(5px);
+.btn1{
+  font-family: 'Roboto', sans-serif !important; /* 修正: 正しい書き方に変更 */
+  font-size: 16px; /* 必要に応じてフォントサイズを調整 */
+  margin: 10px auto;
+  padding: 0.8em 3em;
+  background-color: #ff8492;
+  box-shadow: 0 5px 0 #c46570;
+  border-radius: 60px;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
 }
 
-.btn1 {
-  margin-bottom: 20px;
-}
-
-.btn2 {
-  margin-top: 20px;
+.btn1:active{
+  box-shadow: none;
+  transform: translateY(5px);
 }
