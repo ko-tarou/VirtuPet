@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/earlyaccess/nicomoji.css');
+=======
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+>>>>>>> develop-main
 
 html {
   max-width: 100%;
   margin: 0;
   padding: 0;
   background-color: pink;
+  font-family: 'Roboto', sans-serif; /* 全体にRobotoを適用 */
 }
 
 .container {
