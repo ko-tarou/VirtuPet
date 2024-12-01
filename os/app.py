@@ -79,7 +79,7 @@ async def set_animal_settings():
 				# アニメーションを開始
 				success = wallpaper_manager.start_image_animation(
 					image_folder_path,
-					frame_rate=15  # フレームレートは必要に応じて調整
+					frame_rate=30  # フレームレートは必要に応じて調整
 				)
 				if not success:
 					return jsonify({"status": "error", "message": "アニメーションの開始に失敗しました"}), 500

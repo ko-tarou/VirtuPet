@@ -70,6 +70,8 @@ class WallpaperManager:
 			# 処理済みのファイルを追跡するセット
 			processed_files = set()
 
+			time_delay_ms = 0
+
 			while self.is_running:
 				# フォルダ内の画像を取得しソート（新しい画像を検出）
 				all_files = sorted(
@@ -95,6 +97,8 @@ class WallpaperManager:
 
 					# フレームレートに応じて待機
 					clock.tick(frame_rate)
+     
+					pygame.time.delay(time_delay_ms)
 
 					# 画像を削除
 					try:
