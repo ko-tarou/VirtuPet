@@ -8,7 +8,7 @@ html {
 .container {
   height: 100%;
   text-align: center;
-  padding-top: 60px; /* ヘッダーの高さ分を確保 */
+  padding-top: 90px; /* ヘッダーの高さ分を確保 */
 }
 
 h1 {

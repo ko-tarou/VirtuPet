@@ -42,15 +42,5 @@ body {
     text-decoration: none;
     color: #333;
     font-size: 18px;
+    margin-right: 40px;
   }
-  
-  .nav-links a:hover {
-    text-decoration: underline;
-  }
-  
-  .view-container {
-    margin-top: 60px; /* ヘッダーの高さに合わせて固定 */
-    padding: 10px;
-    position: relative;
-  }
-  

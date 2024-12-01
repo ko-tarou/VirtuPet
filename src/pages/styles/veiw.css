@@ -15,11 +15,12 @@ body {
   justify-content: flex-start; /* 上部から配置 */
   height: 100%;
   width: 100%;
+  margin-top: 25px; /* 上から20pxの位置 */
 }
 
 .inputGroup {
   position: absolute; /* 絶対配置で画面上部に固定 */
-  top: 20px; /* 上から20pxの位置 */
+  top: 70px; /* 上から20pxの位置 */
   left: 50%; /* 横方向で中央揃え */
   transform: translateX(-50%); /* 水平方向の中央に調整 */
   display: flex;
