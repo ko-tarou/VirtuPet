@@ -10,11 +10,15 @@ const Home = () => {
     navigate('/select')
   }
 
+  const handleInstructions = () => {
+    navigate('/Instructions')
+  }
+
   return (
     <div className="container">
       <h1>VirtuPet</h1>
       <button class="btn1" onClick={handleLogin}>ログイン</button>
-      <button class="btn2">使い方</button>
+      <button class="btn2" onClick={handleInstructions}>使い方</button>
     </div>
   );
 }
