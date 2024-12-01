@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/earlyaccess/nicomoji.css');
 
 html {
   max-width: 100%;
@@ -28,8 +28,8 @@ button {
 }
 
 .btn1{
-  font-family: 'Roboto', sans-serif !important; /* 修正: 正しい書き方に変更 */
-  font-size: 16px; /* 必要に応じてフォントサイズを調整 */
+  font-family: "Nico Moji";
+  font-size: 18px; /* 必要に応じてフォントサイズを調整 */
   margin: 10px auto;
   padding: 0.8em 3em;
   background-color: #ff8492;

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nicomoji.css');
+
 html, body {
     max-width: 100%;
     max-width: 100%;
@@ -42,6 +44,7 @@ html, body {
   white-space: nowrap;         /* テキストの折り返しを防止 */
   text-align: center;          /* テキストを中央揃え */
   font-size: 16px;             /* 文字サイズを適切に設定 */
+  font-family: "Nico Moji";
   padding: 0.8em 3em;
   background-color: #ff8492;   /* 背景色 */
   box-shadow: 0 5px 0 #c46570; /* 影の太さ・色 */
