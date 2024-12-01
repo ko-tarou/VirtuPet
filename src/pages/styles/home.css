@@ -11,25 +11,18 @@ html {
 .container {
   height: 100%;
   text-align: center;
-  padding-top: 60px; /* ヘッダーの高さ分を確保 */
+  padding-top: 100px; /* ヘッダーの高さ分を確保 */
 }
 
-h1 {
+.title {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   margin-top: 50px; /* ヘッダーに対して余白を調整 */
   font-size: 100px;
 }
 
-button {
-  all: unset; /* デフォルトスタイルをリセット */
-  cursor: pointer;
-  display: block;
-  text-align: center; /* ボタン内のテキストを中央揃え */
-}
-
 .btn1{
-  font-family: "Nico Moji";
-  font-size: 18px; /* 必要に応じてフォントサイズを調整 */
+  font-family: 'Roboto', sans-serif !important; /* 修正: 正しい書き方に変更 */
+  font-size: 16px; /* 必要に応じてフォントサイズを調整 */
   margin: 10px auto;
   padding: 0.8em 3em;
   background-color: #ff8492;
@@ -41,7 +34,13 @@ button {
   border: none;
 }
 
-.btn1:active{
-  box-shadow: none;
-  transform: translateY(5px);
+.btn1:active {
+box-shadow: none;
+transform: translateY(5px);
+}
+
+.btn1 {
+  margin-bottom: 20px;
+  font-family: "Nico Moji";    /* フォントを指定 */
+  font-size: 18px;             /* 文字サイズを適切に設定 */
 }
