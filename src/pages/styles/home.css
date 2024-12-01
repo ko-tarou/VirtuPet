@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/earlyaccess/nicomoji.css');
-=======
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
->>>>>>> develop-main
 
 html {
   max-width: 100%;
@@ -25,16 +21,17 @@ html {
 }
 
 .btn1{
-display: block;
-margin: 10px auto;
-padding: 0.8em 3em;
-background-color: #ff8492;
-box-shadow: 0 5px 0 #c46570;
-border-radius: 60px;
-color: #fff;
-cursor: pointer;
-text-decoration: none;
-border: none;
+  font-family: 'Roboto', sans-serif !important; /* 修正: 正しい書き方に変更 */
+  font-size: 16px; /* 必要に応じてフォントサイズを調整 */
+  margin: 10px auto;
+  padding: 0.8em 3em;
+  background-color: #ff8492;
+  box-shadow: 0 5px 0 #c46570;
+  border-radius: 60px;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
 }
 
 .btn1:active {
