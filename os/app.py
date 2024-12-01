@@ -1,6 +1,6 @@
 from quart import Quart, request, jsonify
 from quart_cors import cors
-from wallpaper_manager import WallpaperManager
+from test import WallpaperManager
 import json
 import os
 import logging
@@ -18,7 +18,7 @@ wallpaper_manager = WallpaperManager()
 
 # 動物の表示設定を保持する変数
 animal_settings = {
-    "is_visible": True,
+	"is_visible": True,
 	"size": 1.0,  # 初期値
 	"video_path": "../static/images/test.mp4"  # デフォルトの動画パス
 }
@@ -65,22 +65,27 @@ async def set_animal_settings():
 				return jsonify({"status": "error", "message": "サイズは0.5～3.0の範囲内で指定してください"}), 400
 			animal_settings["size"] = size
 
-		# video_path を取得（存在しない場合はデフォルト値を使用）
-		video_path = data.get("video_path", animal_settings.get("video_path", "../static/images/test.mp4"))
-		animal_settings["video_path"] = video_path
-
 		# アニメーションの開始/停止
 		if animal_settings["is_visible"]:
-			success = wallpaper_manager.start_animation(
-				animal_settings["size"],
-				animal_settings["video_path"]
-			)
-			if not success:
-				return jsonify({"status": "error", "message": "アニメーションの開始に失敗しました"}), 500
+			if not wallpaper_manager.is_running:
+				# imagesフォルダのパスを取得
+				current_dir = os.path.dirname(os.path.abspath(__file__))
+				image_folder_path = os.path.join(current_dir, "images")
+
+				if not os.path.exists(image_folder_path):
+					logging.error("画像フォルダが見つかりません: %s", image_folder_path)
+					return jsonify({"status": "error", "message": "画像フォルダが存在しません"}), 500
+
+				# アニメーションを開始
+				success = wallpaper_manager.start_image_animation(
+					image_folder_path,
+					frame_rate=30  # フレームレートは必要に応じて調整
+				)
+				if not success:
+					return jsonify({"status": "error", "message": "アニメーションの開始に失敗しました"}), 500
 		else:
-			success = wallpaper_manager.stop_animation()
-			if not success:
-				return jsonify({"status": "error", "message": "アニメーションの停止に失敗しました"}), 500
+			if wallpaper_manager.is_running:
+				wallpaper_manager.stop_animation()
 
 		# 設定を保存
 		save_settings()

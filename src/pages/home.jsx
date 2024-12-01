@@ -13,8 +13,9 @@ const Home = () => {
   return (
     <div className="container">
       <h1>VirtuPet</h1>
-      <button class="btn1" onClick={handleLogin}>ログイン</button>
-      <button class="btn2">使い方</button>
+      <button className="btn1" onClick={handleLogin}>
+        はじめる
+      </button>
     </div>
   );
 }

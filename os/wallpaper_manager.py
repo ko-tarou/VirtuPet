@@ -43,6 +43,9 @@ class WallpaperManager:
 					self.thread.join()
 				pygame.quit()
 				print("アニメーションを停止しました")
+
+				# 壁紙を元に戻す
+				self._restore_wallpaper()
 				return True
 			print("アニメーションは実行されていません")
 			return False
@@ -126,6 +129,25 @@ class WallpaperManager:
 		if not workerw:
 			print("WorkerWウィンドウが見つかりませんでした")
 		return workerw
+
+	def _restore_wallpaper(self):
+		try:
+			# デフォルトの壁紙パス (変更が必要な場合は適宜修正)
+			default_wallpaper_path = "C:\\Windows\\Web\\Wallpaper\\Windows\\img0.jpg"
+			
+			if os.path.exists(default_wallpaper_path):
+				# Windows APIを使って壁紙を再設定
+				ctypes.windll.user32.SystemParametersInfoW(
+					20,  # SPI_SETDESKWALLPAPER
+					0,
+					default_wallpaper_path,
+					3   # SPIF_UPDATEINIFILE | SPIF_SENDCHANGE
+				)
+				print("元の壁紙に復元しました")
+			else:
+				print("デフォルトの壁紙パスが見つかりません")
+		except Exception as e:
+			print("壁紙の復元中にエラーが発生しました:", str(e))
 
 # 使用例
 if __name__ == "__main__":

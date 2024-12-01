@@ -25,7 +25,7 @@ const View = () => {
         console.error("サーバーエラー:", errorResult.message);
       }
     } catch (error) {
-      setFeedbackMessage('エラーが発生しました。設定を保存できませんでした。');
+      //setFeedbackMessage('エラーが発生しました。設定を保存できませんでした。');
       console.error("ネットワークエラー:", error);
     }
   };
@@ -37,63 +37,24 @@ const View = () => {
     updateAnimalSettings({ is_visible: newVisibility, size: animalSize }); // 即時送信
   };
 
-  // サイズ変更時に処理
-  const handleSizeChange = (e) => {
-    const newSize = parseFloat(e.target.value);
-    setAnimalSize(newSize);
-    updateAnimalSettings({ is_visible: isVisible, size: newSize }); // 即時送信
-  };
+
 
   return (
-    <div>
+  
       <div className="view-container">
-      <div className="layout">
-      <label>
-        表示する:
-        <input 
-          type="checkbox" 
-          checked={isVisible} 
-          onChange={handleVisibilityChange} 
-        />
-      </label>
-      <div>
-        <label>
-          画像の大きさ:
-          <input 
-            type="number" 
-            min="0.5" 
-            max="3.0" 
-            step="0.1" 
-            value={animalSize} 
-            onChange={handleSizeChange} 
-          />
-        </label>
-      </div>
-      
-      {/* プレビュー用の動物画像 */}
-      <div 
-        style={{
-          width: `${animalSize * 100}px`,
-          height: `${animalSize * 100}px`,
-          backgroundImage: 'url(/path/to/animal.png)', // プレビュー画像のパスを指定
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          display: isVisible ? 'block' : 'none',
-          marginTop: '20px',
-          border: '1px solid #ccc' // プレビュー枠の視認性向上
-        }}
-      ></div>
-      </div>
+        <div className="layout">
+          <div class="inputGroup">
+            <input id="option1" name="option1" type="checkbox" onChange={handleVisibilityChange}/>
+            <label for="option1">Windows表示　</label>
+          </div>
+          <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"></link>
 
-    <div className="video-container">
-      <video width="100%" height="100%" autoPlay loop muted>
-        <source src="videos/test.mp4" type="video/mp4" />
-        お使いのブラウザは動画タグに対応していません。
-      </video>
-    </div>
-
-      {/* フィードバックメッセージ */}
-      {feedbackMessage && <p>{feedbackMessage}</p>}
+          <div className="video-container">
+            <video width="100%" height="100%" autoPlay loop muted>
+              <source src="videos/test.mp4" type="video/mp4" />
+              お使いのブラウザは動画タグに対応していません。
+            </video>
+        </div>
       </div>
     </div>
   );
