@@ -67,19 +67,21 @@ class WallpaperManager:
 			# PygameウィンドウをWorkerWの子ウィンドウに設定
 			ctypes.windll.user32.SetParent(hwnd, workerw)
 
-			# フォルダ内の画像を取得しソート
-			image_files = sorted(
-				[os.path.join(folder_path, f) for f in os.listdir(folder_path)
-				if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
-			)
-
-			if not image_files:
-				print("フォルダ内に画像が見つかりませんでした")
-				self.is_running = False
-				return
+			# 処理済みのファイルを追跡するセット
+			processed_files = set()
 
 			while self.is_running:
-				for image_file in image_files:
+				# フォルダ内の画像を取得しソート（新しい画像を検出）
+				all_files = sorted(
+					[os.path.join(folder_path, f) for f in os.listdir(folder_path)
+					if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
+				)
+
+				# 新しい画像のみをリストアップ
+				new_files = [f for f in all_files if f not in processed_files]
+
+				# 新しい画像を処理
+				for image_file in new_files:
 					if not self.is_running:
 						break
 
@@ -94,6 +96,14 @@ class WallpaperManager:
 					# フレームレートに応じて待機
 					clock.tick(frame_rate)
 
+					# 画像を削除
+					try:
+						os.remove(image_file)
+						print(f"画像を削除しました: {image_file}")
+						processed_files.add(image_file)  # 処理済みリストに追加
+					except Exception as e:
+						print(f"画像の削除中にエラーが発生しました: {image_file}, {str(e)}")
+
 					# Pygameイベント処理
 					for event in pygame.event.get():
 						if event.type == pygame.QUIT:
@@ -104,6 +114,7 @@ class WallpaperManager:
 		except Exception as e:
 			print("アニメーションの実行中にエラーが発生しました:", str(e))
 			self.is_running = False
+
 
 	def _get_workerw(self):
 		progman = win32gui.FindWindow("Progman", None)
