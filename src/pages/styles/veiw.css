@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'KaiseiOpti-Bold';
+  src: url('../../fonts/KaiseiOpti-Bold.ttf') format('truetype');
+}
+
 body {
   width: 100%;
   margin: 0;
@@ -61,6 +66,7 @@ code {
 
 
   label {
+    font-family: 'KaiseiOpti-Bold', sans-serif; /* ボタンにフォントを適用 */
     padding: 12px 50px;
     width: auto;
     display: block;
